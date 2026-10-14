@@ -9,9 +9,10 @@ import { fetchDetails, fetchActorMovies, IMG_URL_500, IMG_URL_ORIGINAL } from '.
 import MovieCard from './MovieCard';
 
 const SERVERS = [
-  { name: 'VixCloud', getMovieUrl: (id) => `https://vixsrc.to/movie/${id}`, getTvUrl: (id, s, e) => `https://vixsrc.to/tv/${id}/${s}/${e}` },
+  
   { name: 'VidLove', getMovieUrl: (id) => `https://player.vidlove.cc/embed/movie/${id}`, getTvUrl: (id, s, e) => `https://player.vidlove.cc/embed/tv/${id}/${s}/${e}` },
   { name: 'PrimeSrc', getMovieUrl: (id, imdbId) => `https://primesrc.me/embed/movie?${imdbId ? `imdb=${encodeURIComponent(imdbId)}` : `tmdb=${id}`}`, getTvUrl: (id, s, e, imdbId) => `https://primesrc.me/embed/tv?${imdbId ? `imdb=${encodeURIComponent(imdbId)}&` : `tmdb=${id}&`}season=${s}&episode=${e}` },
+  { name: 'VixCloud', getMovieUrl: (id) => `https://vixsrc.to/movie/${id}`, getTvUrl: (id, s, e) => `https://vixsrc.to/tv/${id}/${s}/${e}` },
   { name: 'VidApi', getMovieUrl: (id) => `https://vidapi.xyz/embed/movie/${id}`, getTvUrl: (id, s, e) => `https://vidapi.xyz/embed/tv/${id}&s=${s}&e=${e}` },
   { name: '2Embed', getMovieUrl: (id) => `https://www.2embed.cc/embed/${id}`, getTvUrl: (id, s, e) => `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` },
   { name: 'SuperEmbed', getMovieUrl: (id) => `https://multiembed.mov/?video_id=${id}&tmdb=1`, getTvUrl: (id, s, e) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
