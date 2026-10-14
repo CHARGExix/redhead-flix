@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, Star, Calendar, Clock, Play, Heart, Check,
   ChevronLeft, ChevronRight, Lightbulb, RefreshCw,
-  SkipBack, SkipForward, Maximize, Minimize, X
+  SkipBack, SkipForward, Maximize, Minimize, X, ExternalLink
 } from 'lucide-react';
 import { fetchDetails, fetchActorMovies, IMG_URL_500, IMG_URL_ORIGINAL } from '../api/tmdb';
 import MovieCard from './MovieCard';
@@ -261,7 +261,17 @@ const WatchPage = ({ itemId, itemType, onBack, onItemClick, genres, isInWatchlis
                 <span className="text-white/60 text-xs font-semibold uppercase tracking-wider">Choose Server</span>
                 <span className="text-[10px] bg-blue-600/20 text-blue-400 px-2 py-0.5 rounded-full font-bold">{SERVERS.length} available</span>
               </div>
-              <span className="text-xs text-white/50">Playing on <span className="text-blue-300 font-semibold">{SERVERS[activeServer].name}</span></span>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-white/50">Playing on <span className="text-blue-300 font-semibold">{SERVERS[activeServer].name}</span></span>
+                <a
+                  href={playerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-blue-400/40 hover:bg-blue-500/10 hover:text-white"
+                >
+                  Open in new tab <ExternalLink size={13} />
+                </a>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               {SERVERS.map((server, idx) => (
