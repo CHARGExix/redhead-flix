@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "RedHead FLIX",
+  "short_name": "RedHead FLIX",
+  "description": "Browse movies and TV shows with RedHead FLIX.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030712",
+  "theme_color": "#070b14",
+  "icons": [
+    {
+      "src": "./pwa-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./pwa-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
