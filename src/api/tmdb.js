@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_TMDB_API_BASE_URL || '/api/tmdb';
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+const API_BASE = import.meta.env.VITE_TMDB_API_BASE_URL || (TMDB_API_KEY ? 'https://api.themoviedb.org/3' : '/api/tmdb');
+const tmdbGet = (url) => axios.get(url, TMDB_API_KEY ? { params: { api_key: TMDB_API_KEY } } : undefined);
 export const IMG_URL_500 = 'https://image.tmdb.org/t/p/w500';
 export const IMG_URL_300 = 'https://image.tmdb.org/t/p/w300';
 export const IMG_URL_ORIGINAL = 'https://image.tmdb.org/t/p/original';
@@ -21,7 +23,7 @@ export const fetchMoviesByLanguage = async (langKey) => {
     const params = new URLSearchParams({ sort_by: 'popularity.desc', page: '1' });
     if (lang?.with_original_language) params.set('with_original_language', lang.with_original_language);
     const url = `${API_BASE}/discover/movie?${params}`;
-    const res = await axios.get(url);
+    const res = await tmdbGet(url);
     return res.data.results || [];
   } catch (err) {
     console.error('Error fetching movies by language:', err);
@@ -31,7 +33,7 @@ export const fetchMoviesByLanguage = async (langKey) => {
 
 export const fetchGenres = async (type) => {
   try {
-    const res = await axios.get(`${API_BASE}/genre/${type}/list`);
+    const res = await tmdbGet(`${API_BASE}/genre/${type}/list`);
     return res.data.genres || [];
   } catch (err) {
     console.error('Error fetching genres:', err);
@@ -48,7 +50,7 @@ export const fetchTrending = async (type) => {
     } else {
       url = `${API_BASE}/discover/tv?sort_by=popularity.desc&page=1`;
     }
-    const res = await axios.get(url);
+    const res = await tmdbGet(url);
     return res.data.results || [];
   } catch (err) {
     console.error('Error fetching trending:', err);
@@ -89,7 +91,7 @@ export const fetchBrowse = async (type, page, sort, langKey, filters, searchQuer
     url = `${API_BASE}/tv/top_rated?page=${page}`;
   }
 
-  const res = await axios.get(url);
+  const res = await tmdbGet(url);
   const data = res.data;
   let results = data.results || [];
 
@@ -101,7 +103,7 @@ export const fetchBrowse = async (type, page, sort, langKey, filters, searchQuer
 };
 
 export const fetchDetails = async (id, type) => {
-  const res = await axios.get(
+  const res = await tmdbGet(
     `${API_BASE}/${type}/${id}?append_to_response=credits,videos,similar,external_ids`
   );
   return res.data;
@@ -128,13 +130,13 @@ export const fetchByCategory = async (type, category) => {
     default:
       url = `${API_BASE}/trending/${type}/week`;
   }
-  const res = await axios.get(url);
+  const res = await tmdbGet(url);
   return res.data.results || [];
 };
 
 export const fetchActorMovies = async (actorId) => {
   try {
-    const res = await axios.get(`${API_BASE}/person/${actorId}/movie_credits`);
+    const res = await tmdbGet(`${API_BASE}/person/${actorId}/movie_credits`);
     return (res.data.cast || [])
       .filter(m => m.poster_path)
       .sort((a, b) => b.popularity - a.popularity)
@@ -148,7 +150,7 @@ export const fetchActorMovies = async (actorId) => {
 export const fetchSearchSuggestions = async (query) => {
   try {
     const url = `${API_BASE}/search/multi?query=${encodeURIComponent(query)}&page=1&include_adult=false`;
-    const res = await axios.get(url);
+    const res = await tmdbGet(url);
     return res.data.results || [];
   } catch (err) {
     console.error('Error fetching search suggestions:', err);

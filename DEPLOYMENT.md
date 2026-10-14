@@ -1,30 +1,18 @@
-# GitHub Pages and TMDB key setup
+# Publish RedHead FLIX with GitHub Pages
 
-GitHub Pages serves the browser app publicly. The TMDB key stays in a Cloudflare Worker secret and is never included in the Pages build.
+The site builds and deploys automatically from the `main` branch using GitHub Actions.
 
-## Set up the TMDB proxy
+## Add the TMDB key
 
-1. In `wrangler.toml`, replace the example origins with the exact origins for your GitHub Pages URL and custom domain. Use origins only, such as `https://yourname.github.io,https://yourdomain.com`.
-2. Install Wrangler or run it through `npx`, then sign in and deploy the Worker:
+1. In the repository, open **Settings → Secrets and variables → Actions → Secrets**.
+2. Add a repository secret named `VITE_TMDB_API_KEY` and paste your TMDB API key.
+3. Push a commit to `main`, or rerun the **Deploy RedHead FLIX to GitHub Pages** workflow from the Actions tab.
 
-   ```powershell
-   npx wrangler login
-   npx wrangler deploy
-   npx wrangler secret put TMDB_API_KEY
-   ```
-
-   Enter a newly generated TMDB API key when Wrangler prompts for it. The Worker URL is shown after deployment.
-3. In the GitHub repository, open **Settings → Secrets and variables → Actions → Variables** and add `VITE_TMDB_API_BASE_URL` with the Worker URL followed by `/api/tmdb`, for example `https://redheadflix-tmdb-api.example.workers.dev/api/tmdb`.
-4. In **Settings → Pages**, choose **GitHub Actions** as the publishing source. Push to `main` to build and deploy the site.
-5. Add your custom domain in the Pages settings and configure its DNS with Namecheap. Add the domain's HTTPS origin to `ALLOWED_ORIGINS` in `wrangler.toml`, then deploy the Worker again.
-
-The origin allowlist is a browser restriction, not user authentication. Because the site is public, anyone can still use its public API endpoint. Add a Cloudflare rate limit for the Worker and monitor TMDB usage.
+The key is stored as an Actions secret and is not committed to the source repository. Since the deployed app calls TMDB directly from each visitor's browser, the key is included in the public JavaScript bundle and can be copied from the live site. Anyone could use it and consume your TMDB quota. Use a dedicated key and rotate it if it is abused.
 
 ## Local development
 
-The local Vite server reads `TMDB_API_KEY` from `.env.local` and proxies requests server-side. `.env.local` is ignored by Git. Never put the key in a `VITE_` variable.
-
-The key that used to be in the browser code should be rotated before publishing if it has been shared or exposed. Put the replacement in `.env.local` and the Cloudflare Worker secret.
+For local development, put `TMDB_API_KEY` in `.env.local`. Vite proxies TMDB requests on the development server, so the local browser does not need a public key. `.env.local` is ignored by Git.
 
 ## Install on a phone
 

@@ -1,8 +1,0 @@
-name = "redheadflix-tmdb-api"
-main = "worker/index.js"
-compatibility_date = "2026-10-14"
-workers_dev = true
-
-[vars]
-# Replace these example origins with the exact GitHub Pages and custom-domain origins.
-ALLOWED_ORIGINS = "https://YOUR_GITHUB_USERNAME.github.io,https://YOUR_CUSTOM_DOMAIN"
